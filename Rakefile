@@ -16,14 +16,15 @@ end
 
 Bundler::GemHelper.install_tasks
 
-Dir["spec/features/*_spec.rb"].each do |spec_file|
-  name = File.basename(spec_file).gsub('_spec.rb', '')
-  desc "Run #{name} specs"
-  RSpec::Core::RakeTask.new("spec:#{name}") do |t|
-    t.pattern = spec_file
-  end
-end
-
-desc "Run specs"
-task spec: Rake.application.tasks.select { |t| t.name.start_with?("spec:") }
+# Dir["spec/**/*_spec.rb"].each do |spec_file|
+#   name = File.basename(spec_file).gsub('_spec.rb', '')
+#   desc "Run #{name} specs"
+#   RSpec::Core::RakeTask.new("spec:#{name}") do |t|
+#     t.pattern = spec_file
+#   end
+# end
+#
+# desc "Run specs"
+# task spec: Rake.application.tasks.select { |t| t.name.start_with?("spec:") }
+RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
