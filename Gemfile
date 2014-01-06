@@ -6,7 +6,7 @@ gem 'sass-rails'
 gem 'compass-rails'
 gem "jquery-rails"
 
-group :development do
+group :development, :test do
   gem 'pry'
   gem 'pry-debugger'
 end

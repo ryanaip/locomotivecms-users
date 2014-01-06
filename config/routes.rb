@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  Locomotive::ContentType.where(_user: true).each(&:add_devise_mapping!)
+  Locomotive::ContentType.refresh_devise_mappings!
 
-  constraints(->(r) { r.params[:user_type] == 'editors'}) do
+  constraints(->(r) { Locomotive::ContentType.user_type_names.include? r.params[:user_type] }) do
     get    "/:user_type/sign_in(.:format)",  to: "locomotive/users/sessions#new", as: 'new_content_type_session'
     post   "/:user_type/sign_in(.:format)",  to: "locomotive/users/sessions#create", as: 'content_type_session'
     get    "/:user_type/sign_out(.:format)",  to: "locomotive/users/sessions#destroy"

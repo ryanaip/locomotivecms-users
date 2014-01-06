@@ -14,7 +14,9 @@ Gem::Specification.new do |s|
   s.add_dependency "locomotive_cms", ">= 2.3"
 
   s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "capybara"
   s.add_development_dependency "capybara-webkit"
+  s.add_development_dependency "capybara-email", '>= 2.2'
   s.add_development_dependency "factory_girl"
   s.add_development_dependency "database_cleaner"
   s.add_development_dependency "launchy"

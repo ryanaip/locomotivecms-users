@@ -53,3 +53,4 @@ module Locomotive
 end
 
 ActionMailer::Base.send(:helper, Locomotive::Users::Paths)
+Devise::Mailer.send(:helper, Locomotive::Users::Paths)

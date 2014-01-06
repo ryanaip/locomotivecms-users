@@ -2,12 +2,14 @@ module SpecHelpers
   def setup_site
     @site = create('test site')
 
-    @users = build(:content_type, site: @site, name: "Writers", _user: true)
-    @users.entries_custom_fields.build(label: "First Name", type: "string")
-    @users.save!
+    @writers = build(:content_type, site: @site, name: "Writers", _user: true)
+    @writers.entries_custom_fields.build(label: "Email", type: "email")
+    @writers.entries_custom_fields.build(label: "First Name", type: "string", required: false)
+    @writers.save!
 
     @editors = build(:content_type, site: @site, name: "Editors", _user: true)
-    @editors.entries_custom_fields.build(label: "First Name", type: "string")
+    @editors.entries_custom_fields.build(label: "Email", type: "email")
+    @editors.entries_custom_fields.build(label: "First Name", type: "string", required: false)
     @editors.save!
 
     # @ctype = build(:content_type, site: @site, name: "Examples")

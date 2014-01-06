@@ -3,7 +3,12 @@ module Locomotive
     module Extensions
       module Automapper
         def self.included(base)
+          base.prepend_before_filter :refresh_devise_mappings
           base.prepend_before_filter :set_devise_mapping
+        end
+
+        def refresh_devise_mappings
+          Locomotive::ContentType.refresh_devise_mappings!
         end
 
         def set_devise_mapping
