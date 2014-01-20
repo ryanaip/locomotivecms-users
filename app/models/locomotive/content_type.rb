@@ -7,8 +7,13 @@ Locomotive::ContentType.class_eval do
 
   after_save :add_devise_mapping!
 
-  def self.user_type_names
-    user_types.pluck(:slug)
+  def self.user_type_names(subdomain)
+    site = Locomotive::Site.where(subdomain: subdomain).first
+    if site
+      user_types.where(site: site).pluck(:slug)
+    else
+      []
+    end
   end
 
   def self.refresh_devise_mappings!
