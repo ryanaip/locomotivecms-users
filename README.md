@@ -3,6 +3,7 @@
 * ~~Add ability to login/logout with `Locomotive::ContentType` models that have `_user` set to true.~~
 * ~~Expose flash messages to templates~~
 * ~~Expose logged in user in templates~~
+* ~~Isolate across sites~~
 * Add tests for flash messages and template views
 * Add ability to specify user access to page templates
 * Require that user-enabled content types have an email field that is required.
