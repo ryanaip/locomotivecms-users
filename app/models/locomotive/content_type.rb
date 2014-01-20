@@ -27,7 +27,7 @@ Locomotive::ContentType.class_eval do
   def add_devise_mapping!
     return if !_user or Devise.mappings.has_key?(devise_mapping)
 
-    Devise.add_mapping devise_mapping, class_name: 'Locomotive::ContentEntry'
+    Devise.add_mapping devise_mapping, class_name: "Locomotive::ContentEntry#{id}"
 
     # Required because Devise only adds mappings to warden on finalize, rather than
     # when add_mapping is called.
