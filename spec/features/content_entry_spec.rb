@@ -3,6 +3,11 @@ require 'spec_helper'
 feature "Content entry user interface" do
   background do
     setup_site
+
+    keys = ::Devise.mappings.keys.reject{ |k| k == :locomotive_account }
+    keys.each { |key| ::Devise.mappings.delete(key) }
+    Locomotive::ContentType.refresh_devise_mappings!
+  end
   end
 
   shared_examples_for "a set of login pages" do
