@@ -12,12 +12,15 @@ module Locomotive
         end
 
         def set_devise_mapping
-          key = params[:user_type].singularize.to_sym
+          key = "#{request.subdomain}_#{params[:user_type].singularize}".to_sym
           request.env['devise.mapping'] = ::Devise.mappings[key]
         end
 
         def content_type
-          Locomotive::ContentType.where(slug: params[:user_type]).first
+          Locomotive::ContentType.where(
+            slug: params[:user_type],
+            site: Locomotive::Site.where(subdomain: request.subdomain).first
+          ).first
         end
       end
     end

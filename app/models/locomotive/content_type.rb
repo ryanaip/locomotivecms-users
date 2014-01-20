@@ -21,7 +21,7 @@ Locomotive::ContentType.class_eval do
   end
 
   def devise_mapping
-    slug.singularize.to_sym
+    "#{site.subdomain}_#{slug.singularize}".to_sym
   end
 
   def add_devise_mapping!

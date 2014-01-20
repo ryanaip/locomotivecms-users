@@ -23,13 +23,33 @@ module Locomotive
 
           def #{method}_url(resource_name, opts={})
             # TODO: This shouldn't be necessary if these are mixed into the right place
-            opts[:host] ||= Rails.application.config.action_mailer.default_url_options[:host]
+            opts[:host] ||= host_for(resource_name)
             url.#{mapping}_url(opts.merge(user_type: type_for(resource_name)))
           end
         URL_HELPERS
       end
 
     private
+      def host_for(resource)
+        base = Rails.application.config.action_mailer.default_url_options[:host]
+        subdomain = subdomain_for(resource)
+
+        base.gsub('*', subdomain)
+      end
+
+      def subdomain_for(resource)
+        subdomain = case resource
+        when Locomotive::ContentEntry
+          resource.content_type.site.subdomain
+        when Locomotive::ContentType
+          resource.site.subdomain
+        else
+          resource.to_s.split('_').first
+        end
+
+        subdomain.to_s
+      end
+
       def type_for(resource)
         slug = case resource
         when Locomotive::ContentEntry
@@ -37,7 +57,7 @@ module Locomotive
         when Locomotive::ContentType
           resource.slug
         else
-          resource
+          resource.to_s.split('_')[1..-1].join('_')
         end
 
         slug.to_s.pluralize
