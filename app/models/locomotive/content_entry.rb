@@ -8,6 +8,14 @@ Locomotive::ContentEntry.class_eval do
     :confirmable,
   ]
 
+  # Can't use devise validatable because it doesn't appropriately scope by content type
+  validate do |entry|
+    emails = entry.class.where(email: entry.email).to_a
+    errors.add(:email, 'must be unique') unless emails.empty? or emails == [entry]
+    errors.add(:password, 'is required') if entry.password.blank? and entry.new_record?
+    errors.add(:password_confirmation, 'must match password') if entry.password.present? and entry.password_confirmation != entry.password
+  end
+
   ## devise fields (need to be declared since 2.x) ##
   field :remember_created_at,     type: Time
   field :email,                   type: String, default: ''

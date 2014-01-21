@@ -70,7 +70,8 @@ feature "Content entry user interface" do
         end
 
         scenario "allows sign in" do
-          user.confirm!
+          expect(user.confirm!).to be_true
+
           visit url("/#{type}/sign_in")
           fill_in "Email", with: email
           fill_in "Password", with: password
@@ -126,6 +127,7 @@ feature "Content entry user interface" do
           password: password,
           password_confirmation: password
         )
+        user.save!
         user.confirm!
 
         user

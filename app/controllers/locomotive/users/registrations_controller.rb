@@ -9,6 +9,11 @@ class Locomotive::Users::RegistrationsController < Devise::RegistrationsControll
     resource = super(hash)
     self.resource = template
     template.attributes = template.attributes.merge(resource.attributes)
+
+    # Password and password_confirmation are never stored in attributes
+    resource_params = params.fetch(devise_mapping_key, {})
+    template.password = resource_params[:password]
+    template.password_confirmation = resource_params[:password_confirmation]
   end
 
 private
