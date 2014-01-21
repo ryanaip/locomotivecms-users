@@ -12,3 +12,4 @@
 * Clean up route helpers
 * Logout other users when you login as a new user
 * Remove manual creation of warden mappings in after save of `ContentEntry`
+* On already signed in, redirect home
