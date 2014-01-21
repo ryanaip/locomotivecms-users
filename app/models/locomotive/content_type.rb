@@ -7,12 +7,16 @@ Locomotive::ContentType.class_eval do
 
   after_save :add_devise_mapping!
 
-  def self.user_type_names(subdomain)
-    site = Locomotive::Site.where(subdomain: subdomain).first
-    if site
-      user_types.where(site: site).pluck(:slug)
+  def self.user_type_names(subdomain=nil)
+    if Locomotive.config.multi_sites
+      site = Locomotive::Site.where(subdomain: subdomain).first
+      if site
+        user_types.where(site: site).pluck(:slug)
+      else
+        []
+      end
     else
-      []
+      user_types.pluck(:slug)
     end
   end
 
@@ -21,7 +25,11 @@ Locomotive::ContentType.class_eval do
   end
 
   def devise_mapping
-    "#{site.subdomain}_#{slug.singularize}".to_sym
+    if Locomotive.config.multi_sites
+      "#{site.subdomain}_#{slug.singularize}".to_sym
+    else
+      slug.singularize.to_sym
+    end
   end
 
   def add_devise_mapping!

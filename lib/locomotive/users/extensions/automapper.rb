@@ -11,16 +11,25 @@ module Locomotive
           Locomotive::ContentType.refresh_devise_mappings!
         end
 
+        def devise_mapping_key
+          if Locomotive.config.multi_sites
+            "#{request.subdomain}_#{params[:user_type].singularize}".to_sym
+          else
+            params[:user_type].singularize.to_sym
+          end
+        end
+
         def set_devise_mapping
-          key = "#{request.subdomain}_#{params[:user_type].singularize}".to_sym
-          request.env['devise.mapping'] = ::Devise.mappings[key]
+          request.env['devise.mapping'] = ::Devise.mappings[devise_mapping_key]
         end
 
         def content_type
-          Locomotive::ContentType.where(
-            slug: params[:user_type],
-            site: Locomotive::Site.where(subdomain: request.subdomain).first
-          ).first
+          opts = { slug: params[:user_type] }
+          if Locomotive.config.multi_sites
+            opts[:site] = Locomotive::Site.where(subdomain: request.subdomain).first
+          end
+
+          Locomotive::ContentType.where(opts).first
         end
       end
     end

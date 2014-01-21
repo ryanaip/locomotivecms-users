@@ -34,10 +34,12 @@ module Locomotive
         base = Rails.application.config.action_mailer.default_url_options[:host]
         subdomain = subdomain_for(resource)
 
-        base.gsub('*', subdomain)
+        subdomain ? base.gsub('*', subdomain) : base
       end
 
       def subdomain_for(resource)
+        return nil unless Locomotive.config.multi_sites
+
         subdomain = case resource
         when Locomotive::ContentEntry
           resource.content_type.site.subdomain
@@ -51,13 +53,14 @@ module Locomotive
       end
 
       def type_for(resource)
-        slug = case resource
-        when Locomotive::ContentEntry
+        slug = if resource.is_a?(Locomotive::ContentEntry)
           resource.content_type.slug
-        when Locomotive::ContentType
+        elsif resource.is_a?(Locomotive::ContentType)
           resource.slug
-        else
+        elsif Locomotive.config.multi_sites
           resource.to_s.split('_')[1..-1].join('_')
+        else
+          resource.to_s
         end
 
         slug.to_s.pluralize
