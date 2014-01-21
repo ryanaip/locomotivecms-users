@@ -61,6 +61,12 @@ feature "Content entry user interface" do
           visit link[:href]
 
           expect(page).to have_content('Your account was successfully confirmed.')
+
+          pending "Make sure on the home page"
+        end
+
+        scenario "redirects to the home page" do
+          pending "Make sure registering redirects to the home page"
         end
 
         scenario "allows sign in" do

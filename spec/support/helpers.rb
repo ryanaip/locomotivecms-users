@@ -61,6 +61,14 @@ module SpecHelpers
           {% endif %}
         EOT
       )
+
+      home = s.pages.where(slug: 'index').first
+      home.raw_template = <<-EOF
+        Notice: {{ flash.notice }}
+        Error: {{ flash.error }}
+        Content of the home page.
+      EOF
+      home.save!
     end
 
     another_editors = build(:content_type, site: another_site, name: "Editors", _user: true)
